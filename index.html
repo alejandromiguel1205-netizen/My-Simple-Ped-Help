@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center | My Simple Ped Selector</title>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #09090b;
+            --bg-sidebar: rgba(18, 18, 22, 0.75);
+            --bg-card: rgba(24, 24, 34, 0.6);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-main: #f4f4f7;
+            --text-muted: #a1a1b2;
+            --accent: #2ecc71; /* Verde Rebuild */
+            --accent-dim: rgba(46, 204, 113, 0.1);
+            --error: #e74c3c;
+            --code-bg: #16161a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            /* Fondo sutil con luces de neón detrás */
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(46, 204, 113, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(46, 204, 113, 0.02) 0%, transparent 40%);
+        }
+
+        /* --- SIDEBAR PREMIUM (GLASSMORPHISM) --- */
+        aside {
+            width: 320px;
+            background-color: var(--bg-sidebar);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            z-index: 100;
+        }
+
+        .app-logo {
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .app-logo h1 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .app-logo h1 iconify-icon {
+            color: var(--accent);
+            filter: drop-shadow(0 0 8px rgba(46, 204, 113, 0.4));
+        }
+
+        .version-tag {
+            font-size: 0.75rem;
+            background-color: var(--accent-dim);
+            color: var(--accent);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            border: 1px solid rgba(46, 204, 113, 0.15);
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-menu a:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.03);
+            transform: translateX(4px);
+        }
+
+        .nav-menu a.active {
+            color: var(--accent);
+            background-color: var(--accent-dim);
+            font-weight: 600;
+            border-left: 3px solid var(--accent);
+            border-radius: 0 10px 10px 0;
+            padding-left: 13px;
+        }
+
+        /* --- AREA DE CONTENIDO PRINCIPAL --- */
+        main {
+            margin-left: 320px;
+            flex-grow: 1;
+            padding: 60px 100px;
+            max-width: 1150px;
+        }
+
+        section {
+            padding-top: 20px;
+            margin-bottom: 60px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 50px;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-size: 2.4rem;
+            color: #ffffff;
+            font-weight: 800;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            letter-spacing: -0.5px;
+        }
+
+        h2 iconify-icon {
+            font-size: 2.6rem;
+            color: var(--accent);
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.75;
+            margin-bottom: 24px;
+        }
+
+        /* --- CARDS PASO A PASO PREMIUM --- */
+        .tutorial-step {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.3s ease;
+        }
+
+        .tutorial-step:hover {
+            border-color: rgba(46, 204, 113, 0.25);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 18px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--accent) 0%, #27ae60 100%);
+            color: #09090b;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.15rem;
+            box-shadow: 0 0 12px rgba(46, 204, 113, 0.3);
+        }
+
+        .step-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .file-type-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 24px;
+        }
+
+        .file-card {
+            background-color: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s ease;
+        }
+
+        .file-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .file-card h4 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        /* --- BLOQUES DE CÓDIGO INTERACTIVOS --- */
+        .code-snippet {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            color: #e2e2e7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            transition: color 0.2s;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .copy-btn:hover {
+            color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        /* --- TABLA DE ATAJOS --- */
+        .wiki-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background-color: rgba(18, 18, 22, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .wiki-table th, .wiki-table td {
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 0.98rem;
+        }
+
+        .wiki-table th {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: #ffffff;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .wiki-table td {
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .wiki-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        kbd {
+            background-color: #1c1c24;
+            border: 1px solid #32323d;
+            border-radius: 6px;
+            color: #ffffff;
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            box-shadow: 0 2px 0 #0f0f13;
+        }
+
+        /* --- CUADROS DE ALERTA DE ERRORES --- */
+        .error-box {
+            background-color: rgba(231, 76, 60, 0.02);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--error);
+            border-radius: 4px 16px 16px 4px;
+            padding: 28px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .error-box h3 {
+            margin-top: 0;
+            color: #ffffff;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .error-box h3 iconify-icon {
+            color: var(--error);
+            font-size: 1.5rem;
+        }
+
+        /* --- BOTONES Y CONTACTOS --- */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--accent);
+            color: #09090b;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+        }
+
+        .btn-action:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .contact-pill {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: border-color 0.3s;
+        }
+
+        .contact-pill:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-pill iconify-icon {
+            font-size: 1.6rem;
+            color: var(--accent);
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 35px;
+        }
+
+        /* RESPONSIVIDAD PARA PANTALLAS CHICAS */
+        @media (max-width: 1000px) {
+            aside { width: 100%; position: relative; height: auto; padding: 24px; border-right: none; border-bottom: 1px solid var(--border-color); }
+            main { margin-left: 0; padding: 40px 24px; }
+            body { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="app-logo">
+            <h1>My Simple Ped Selector</h1>
+            <span class="version-tag">Official Support v1.0.0</span>
+        </div>
+
+        <nav class="nav-menu">
+            <div class="nav-title">User Guide</div>
+            <a href="#welcome" class="active"><iconify-icon icon="lucide:home"></iconify-icon> Welcome</a>
+            <a href="#openiv-guide"><iconify-icon icon="ant-design:folder-open-filled"></iconify-icon> 1. OpenIV Setup</a>
+            <a href="#app-guide"><iconify-icon icon="eos-icons:configuration-file"></iconify-icon> 2. App Configuration</a>
+            <a href="#shortcuts-guide"><iconify-icon icon="fluent:keyboard-layout-twenty-four-regular"></iconify-icon> App Shortcuts</a>
+            <a href="#fixes-guide"><iconify-icon icon="fluent:alert-urgent-24-filled"></iconify-icon> Fix Common Errors</a>
+            <a href="#contact-guide"><iconify-icon icon="material-symbols:contact-support-outline"></iconify-icon> Support & Contact</a>
+        </nav>
+    </aside>
+
+    <main>
+
+        <section id="welcome">
+            <h2><iconify-icon icon="lucide:sparkles"></iconify-icon> Welcome!</h2>
+            <p>Welcome to the official <strong>My Simple Ped Selector</strong> Help Center. This interface was engineered to guide you through adding custom addon characters (Peds) to GTA V seamlessly, cutting out manual XML editing completely and preventing file corruption.</p>
+            <p>Follow the structured sections below to map out your files in OpenIV and register them correctly inside the application framework.</p>
+            
+            <div style="margin-top: 15px;">
+                <a href="https://www.gta5-mods.com" target="_blank" class="btn-action">
+                    <iconify-icon icon="tabler:download"></iconify-icon> Download on GTA5-Mods
+                </a>
+            </div>
+        </section>
+
+        <section id="openiv-guide">
+            <h2><iconify-icon icon="ant-design:folder-open-filled"></iconify-icon> 1. OpenIV Directory Setup</h2>
+            <p>To begin, open <strong>OpenIV</strong>, ensure <strong>Edit Mode</strong> is fully active, and navigate into your custom addon DLC package partition, specifically inside the <code>peds.rpf</code> file container. Verify your loose file patterns:</p>
+            
+            <div class="file-type-container">
+                <div class="file-card">
+                    <h4><iconify-icon icon="lucide:file-text"></iconify-icon> Option A: Non-Streamed (Standard)</h4>
+                    <p>Select this route if your character bundle consists strictly of <strong>4 loose files</strong> with these matching extensions:</p>
+                    
+                    <div class="code-snippet">
+                        <span id="text-standard">ydd, ytd, yft, ymt</span>
+                        <button class="copy-btn" onclick="copyToClipboard('text-standard', this)"><iconify-icon icon="lucide:copy"></iconify-icon></button>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Action:</strong> Drag and drop all 4 fragments directly into the root level of your <code>peds.rpf</code> archive layout.</p>
+                </div>
+
+                <div class="file-card">
+                    <h4><iconify-icon icon="lucide:folder"></iconify-icon> Option B: Streamed (Complex)</h4>
+                    <p>Select this route if your mod pack has dedicated folders for high-definition texture asset packages or geometry layers.</p>
+                    <p style="margin-top: 15px;"><strong>Action:</strong> Right-click inside <code>peds.rpf</code>, create a <strong>new folder</strong>, and match its name exactly to your character model string. Open it, and drop all asset sheets inside.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="app-guide">
+            <h2><iconify-icon icon="eos-icons:configuration-file"></iconify-icon> 2. Application Registration</h2>
+            <p>Once your file directories match in OpenIV, open up the <strong>My Simple Ped Selector</strong> client workspace and execute these 3 core integration steps:</p>
+            
+            <div class="tutorial-step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3>Initialize Profile Matrix</h3>
+                </div>
+                <p>Navigate to the top workspace layout toolbar and click <strong>Ped -> Create New Ped</strong> (or execute the hotkey combo <kbd>Ctrl + N</kbd>). Populate the required parameters:</p>
+                <ul style="margin-left: 22px; margin-top: 15px; color: var(--text-muted); display: flex; flex-direction: column; gap: 8px;">
+                    <li><strong>Ped Name:</strong> Input the exact string name of the files loaded into OpenIV (Case-sensitive mapping).</li>
+                    <li><strong>Ped Gender:</strong> Map the bone animation base to <code>Male</code> or <code>Female</code>.</li>
+                    <li><strong>Is Streamed:</strong> Set to <code>False</code> if you implemented Option A (loose entries), or set to <code>True</code> if you followed Option B (subfolder setup).</li>
+                </ul>
+                <p style="margin-top: 15px;">Click <strong>Save Ped</strong> to add the row to the active interface index.</p>
+            </div>
+
+            <div class="tutorial-step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3>Execute Database Rebuild</h3>
+                </div>
+                <p>Locate the upper tool options and trigger the <strong>REBUILD!</strong> action button. The green compiler progress bar will cycle, loading row properties securely into the local database index. Wait for completion.</p>
+            </div>
+
+            <div class="tutorial-step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3>Lock Progress Serialization</h3>
+                    </div>
+                <p>Commit your configuration data to the system disk by selecting <strong>File -> Save</strong> or executing the hotkey combo <kbd>Ctrl + G</kbd>. If an asterisk symbol (<code>*</code>) marks the window head title, your workspace contains uncommitted changes.</p>
+            </div>
+        </section>
+
+        <section id="shortcuts-guide">
+            <h2><iconify-icon icon="fluent:keyboard-layout-twenty-four-regular"></iconify-icon> Hotkey Commands</h2>
+            <p>Utilize these native hotkey controls inside the interface environment to expedite data profile management:</p>
+            
+            <table class="wiki-table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Shortcut</th>
+                        <th>System Operation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Create Profile</strong></td>
+                        <td><kbd>Ctrl + N</kbd></td>
+                        <td>Instantly prompts the creation dialog panel.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Save Workspace</strong></td>
+                        <td><kbd>Ctrl + G</kbd></td>
+                        <td>Serializes and commits all current rows into the local database.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Export As Profile</strong></td>
+                        <td><kbd>Ctrl + A</kbd></td>
+                        <td>Saves the selected row out into a single shareable <code>.spm</code> file.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Import External Profile</strong></td>
+                        <td><kbd>Ctrl + O</kbd></td>
+                        <td>Parses an external <code>.spm</code> dataset package straight into the active grid.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duplicate Entry</strong></td>
+                        <td><kbd>Ctrl + D</kbd></td>
+                        <td>Clones data using protective routing suffixes (e.g., <code>-copy</code>, <code>-2</code>).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Purge Profile</strong></td>
+                        <td><kbd>Delete</kbd></td>
+                        <td>Drops the selected matrix entry after running a safety validation prompt.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="fixes-guide">
+            <h2><iconify-icon icon="fluent:alert-urgent-24-filled"></iconify-icon> Environmental Troubleshooting</h2>
+            <p>Review these environment fix logs if you experience loading discrepancies or deployment anomalies during runtime:</p>
+            
+            <div class="error-box">
+                <h3><iconify-icon icon="fluent:warning-28-filled"></iconify-icon> Game Engine Crashes Instantly (CTD) Upon Entity Spawning</h3>
+                <p>This crash occurs when you breach Grand Theft Auto V's default internal memory allocation limits for mod assets. To solve this, deploy an updated custom <code>gameconfig.xml</code> matched with <code>HeapAdjuster</code> and <code>Packfile Limit Adjuster</code> plugins inside your root directory.</p>
+            </div>
+
+            <div class="error-box">
+                <h3><iconify-icon icon="fluent:warning-28-filled"></iconify-icon> Character Model Spawns Invisible or With Corrupted Textures</h3>
+                <p>Points to a streaming structural mismatch. Cross-check your <strong>Is Streamed</strong> option. If your mod files require a directory layout inside OpenIV but you flagged it as <code>False</code> inside the compiler, the engine won't link fragment dependencies, rendering the model out or causing massive alpha textures clipping.</p>
+            </div>
+        </section>
+
+        <section id="contact-guide">
+            <h2><iconify-icon icon="material-symbols:contact-support-outline"></iconify-icon> Support & Contact</h2>
+            <p>For official standalone file updates, platform distributions, or direct inquiries, interact with the developer touchpoints:</p>
+            
+            <div class="contact-container">
+                <div class="contact-pill">
+                    <iconify-icon icon="ic:baseline-discord"></iconify-icon>
+                    <span><strong>Discord Contact:</strong> miguelxd2</span>
+                </div>
+                <div class="contact-pill">
+                    <iconify-icon icon="lucide:download-cloud"></iconify-icon>
+                    <span><strong>Platform:</strong> GTA5-Mods Catalog Ecosystem</span>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>My Simple Ped Selector &copy; 2026. Take modification seriously.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // 1. Script para el Botón de Copiar interactivo
+        function copyToClipboard(elementId, btn) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.innerHTML = '<iconify-icon icon="lucide:check" style="color: #2ecc71;"></iconify-icon>';
+                setTimeout(() => {
+                    btn.innerHTML = '<iconify-icon icon="lucide:copy"></iconify-icon>';
+                }, 2000);
+            });
+        }
+
+        // 2. Script Avanzado de Scroll (Detecta la sección actual en tiempo real)
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-menu a');
+
+        window.addEventListener('scroll', () => {
+            let currentSectionId = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // Si el scroll pasa de la mitad de la sección, la marca activa
+                if (window.scrollY >= (sectionTop - 150)) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
